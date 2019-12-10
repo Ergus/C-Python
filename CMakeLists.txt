@@ -22,12 +22,19 @@ find_package(PythonLibs)
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 
+configure_file(mylib.py mylib.py COPYONLY)
+
 add_executable (main main.c)
 target_link_libraries (main ${PYTHON_LIBRARIES} )
 
 enable_testing()
 
-add_test(test_5_4 ./main mylib multiply 4 5)
-set_tests_properties(test_5_4 PROPERTIES
+add_test(test_5_4_C ./main mylib multiply 4 5)
+set_tests_properties(test_5_4_C PROPERTIES
+  PASS_REGULAR_EXPRESSION "Result of call: 20"
+)
+
+add_test(test_5_4_Python ./mylib.py 4 5)
+set_tests_properties(test_5_4_Python PROPERTIES
   PASS_REGULAR_EXPRESSION "Result of call: 20"
 )
